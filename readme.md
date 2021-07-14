@@ -30,5 +30,5 @@ If there are libraries missing, then troubleshoot at runtime.
 ***
 ## NYC CNC
 * Good examples for using the ClearPath classes and move method are found [here](https://youtu.be/ZRURwDFvdAs?t=225).
-* See more examples on using the ClearPath package under the example folder in the package.
+* See more examples on using the ClearPath package under the example folder in the ClearPathStepGen package.
     
