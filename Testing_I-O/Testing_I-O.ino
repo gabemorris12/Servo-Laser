@@ -11,7 +11,7 @@ void setup() {
   X.setMaxVel(20000);  // Value between 2 and 100,000 steps/sec
   X.setMaxAccel(50000);  // Value between 4000 and 2,000,000 steps/sec^2
 
-  X.enable();
+  X.enable();  // Homimg will automatically occur at this call. Be sure to account for its moving.
 
   delay(100);
 
@@ -22,7 +22,35 @@ void setup() {
 
 void loop() {
   X.move(800);
-  delay(20);
+  while (!X.readHLFB() or !X.commandDone()) {
+    Serial.println("Moving");
+  }
+  Serial.println("Move Done");
+  delay(5000);
   X.move(-800);
-  delay(20);
+  while (!X.readHLFB() or !X.commandDone()) {
+    Serial.println("Moving");
+  }
+  Serial.println("Move Done");
+  delay(5000);
+
+  // Some fun
+//  X.setMaxVel(50000);
+//  X.move(10000);
+//  while (!X.commandDone()) {
+//    
+//  }
+//  delay(20);
+//  X.move(-20000);
+//  while (!X.commandDone()) {
+//    
+//  }
+//  delay(20);
+//  X.setMaxVel(80000);
+//  X.move(30000);
+//  while (!X.commandDone()) {
+//    
+//  }
+//  delay(20);
+//  X.setMaxVel(20000);
 }
