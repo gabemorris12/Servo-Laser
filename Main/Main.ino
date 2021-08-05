@@ -33,8 +33,7 @@ int index = 0;
 
 float current_position = 0.00;
 float next_position;
-int max_position = 28;
-int homing_wait_time = 30000;  // wait time in milliseconds
+int max_position = 28;  // wait time in milliseconds
 
 float diameter = 1.004;  // Diameter of the wheel in inches. Adjust this value to change the distance.
 
@@ -54,8 +53,10 @@ void setup() {
   X.enable();  // Homimg will automatically occur at this call. Be sure to account for its moving.
   lcd.setCursor(0, 0);
   lcd.print("Homing");  
-  Serial.print("Homing");
-  delay(homing_wait_time);
+  // HLFB needs to be set to ASG-Position. X.readHLFB() returns 0 when the motor is in motion.
+  while (!X.readHLFB()) {
+    Serial.println("Homing");
+  }
 
   delay(100);
 
@@ -100,6 +101,7 @@ void loop() {
     reset();
   }
 
+  // B is the homing key.
   if (key == 'B') {
     reset();
     X.disable();
@@ -107,8 +109,9 @@ void loop() {
     X.enable();
     lcd.setCursor(0, 0);
     lcd.print("Homing");
-    Serial.println("Homing");
-    delay(homing_wait_time);
+    while (!X.readHLFB()) {
+      Serial.println("Homing");
+    }
     current_position = 0.0;
 
   delay(100);
