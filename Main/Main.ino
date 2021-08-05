@@ -35,7 +35,7 @@ float current_position = 0.00;
 float next_position;
 int max_position = 28;  // wait time in milliseconds
 
-float diameter = 1.004;  // Diameter of the wheel in inches. Adjust this value to change the distance.
+float diameter = 1.0015;  // Diameter of the wheel in inches. Adjust this value to change the distance.
 
 
 void setup() {
