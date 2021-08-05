@@ -16,7 +16,7 @@ const byte COLS = 4;
 
 char hexa_keys[ROWS][COLS] = {
   {'1', '2', '3', '\0'},
-  {'4', '5', '6', '\0'},
+  {'4', '5', '6', 'B'},
   {'7', '8', '9', 'C'},
   {'.', '0', '\0', 'D'}
 };
@@ -33,7 +33,8 @@ int index = 0;
 
 float current_position = 0.00;
 float next_position;
-int max_position = 29;
+int max_position = 28;
+int homing_wait_time = 30000;  // wait time in milliseconds
 
 float diameter = 1.004;  // Diameter of the wheel in inches. Adjust this value to change the distance.
 
@@ -42,19 +43,23 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 
+  lcd.init();
+  lcd.backlight();
+
   X.attach(22, 23, 24, 25);  // Direction/A is pin 22, Step/B is pin 23, Enable is pin 24, HLFB is pin 25
 
   X.setMaxVel(20000);  // Value between 2 and 100,000 steps/sec
   X.setMaxAccel(50000);  // Value between 4000 and 2,000,000 steps/sec^2
 
   X.enable();  // Homimg will automatically occur at this call. Be sure to account for its moving.
+  lcd.setCursor(0, 0);
+  lcd.print("Homing");  
+  Serial.print("Homing");
+  delay(homing_wait_time);
 
   delay(100);
 
   machine.Start();
-
-  lcd.init();
-  lcd.backlight();
 }
 
 void loop() {
@@ -93,6 +98,21 @@ void loop() {
   
   if (key == 'C' || index == 11) {
     reset();
+  }
+
+  if (key == 'B') {
+    reset();
+    X.disable();
+    delay(100);
+    X.enable();
+    lcd.setCursor(0, 0);
+    lcd.print("Homing");
+    Serial.println("Homing");
+    delay(homing_wait_time);
+    current_position = 0.0;
+
+  delay(100);
+    
   }
 }
 
