@@ -1,3 +1,5 @@
+// The only things that may require adjustment are the max_position and the diameter. 
+// View their corresponding comments.
 #include <Keypad.h>
 
 #include <Wire.h>
@@ -33,9 +35,12 @@ int index = 0;
 
 float current_position = 0.00;
 float next_position;
-int max_position = 28;  // wait time in milliseconds
+int max_position = 28;  // The maximum position in inches. Adjust this value depending on the length of the rail.
 
 float diameter = 1.0015;  // Diameter of the wheel in inches. Adjust this value to change the distance.
+// Governing equation: pulses = resolution(distance)/(pi*diameter) and the resolution is a constant 800.
+// If the actual measurement is greater than the laser distance, then decrease the diameter to send more pulses.
+// If the actual measurement is smaller than the laser distance, then increase the diameter to send fewer pulses.
 
 
 void setup() {
